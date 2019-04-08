@@ -8,6 +8,8 @@ using AvalonStudio.Projects;
 using AvalonStudio.Shell;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Reactive;
 
 namespace AvalonStudio.Controls.Standard.SolutionExplorer
 {
@@ -52,7 +54,7 @@ namespace AvalonStudio.Controls.Standard.SolutionExplorer
                 //shell.Debug(model);
             });
 
-            BuildCommand = ReactiveCommand.Create(async () => await studio.BuildAsync(model));
+            BuildCommand = ReactiveCommand.CreateFromTask(async () => await studio.BuildAsync(model));
 
             CleanCommand = ReactiveCommand.Create(() => studio.Clean(model));
 
@@ -94,7 +96,10 @@ namespace AvalonStudio.Controls.Standard.SolutionExplorer
 
             DevConsoleCommand = ReactiveCommand.Create(() =>
             {
-                PlatformSupport.LaunchShell(Model.CurrentDirectory, Model.ToolChain?.BinDirectory, Model.Debugger2?.BinDirectory);
+                if (Directory.Exists(Model.CurrentDirectory))
+                {
+                    PlatformSupport.LaunchShell(Model.CurrentDirectory, Model.ToolChain?.BinDirectory, Model.Debugger2?.BinDirectory);
+                }
             });
         }
 
@@ -108,17 +113,17 @@ namespace AvalonStudio.Controls.Standard.SolutionExplorer
 
         public ObservableCollection<ProjectItemViewModel> Items { get; }
 
-        public ReactiveCommand BuildCommand { get; protected set; }
-        public ReactiveCommand CleanCommand { get; protected set; }
-        public ReactiveCommand DebugCommand { get; protected set; }
-        public ReactiveCommand ManageReferencesCommand { get; protected set; }
-        public ReactiveCommand RemoveCommand { get; protected set; }
-        public ReactiveCommand ConfigureCommand { get; }
-        public ReactiveCommand SetProjectCommand { get; }
-        public ReactiveCommand OpenInExplorerCommand { get; }
-        public ReactiveCommand NewItemCommand { get; }
+        public ReactiveCommand<Unit, bool> BuildCommand { get; protected set; }
+        public ReactiveCommand<Unit, Unit> CleanCommand { get; protected set; }
+        public ReactiveCommand<Unit, Unit> DebugCommand { get; protected set; }
+        public ReactiveCommand<Unit, Unit> ManageReferencesCommand { get; protected set; }
+        public ReactiveCommand<Unit, Unit> RemoveCommand { get; protected set; }
+        public ReactiveCommand<Unit, Unit> ConfigureCommand { get; }
+        public ReactiveCommand<Unit, Unit> SetProjectCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenInExplorerCommand { get; }
+        public ReactiveCommand<Unit, Unit> NewItemCommand { get; }
 
-        public ReactiveCommand DevConsoleCommand { get; }
+        public ReactiveCommand<Unit, Unit> DevConsoleCommand { get; }
 
         public bool Visibility
         {

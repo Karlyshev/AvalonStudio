@@ -5,16 +5,10 @@
     </PostBuildEvent>
     <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CodeEditor\CodeEditor.xaml" />
-    <EmbeddedResource Include="CodeEditor\CodeEditorToolTip.xaml" />
-    <EmbeddedResource Include="CodeEditor\CompletionAssistantView.xaml" />
-    <EmbeddedResource Include="CodeEditor\EditorSettingsView.xaml" />
-    <EmbeddedResource Include="CodeEditor\Intellisense.xaml" />
-    <EmbeddedResource Include="CodeEditor\IntellisenseAssistantUserControl.xaml" />
-    <EmbeddedResource Include="CodeEditor\IntellisenseUserControl.xaml" />
-    <EmbeddedResource Include="CodeEditor\SignatureView.xaml" />
-    <EmbeddedResource Include="CodeEditor\SymbolView.xaml" />
     <EmbeddedResource Include="FindInFiles\FindInFilesView.xaml" />
     <EmbeddedResource Include="SettingsDialog\SettingsDialogView.xaml" />
     <EmbeddedResource Include="SolutionExplorer\Icons\Icons.xaml" />
@@ -25,8 +19,6 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="AboutScreen\AboutDialogView.paml" />
-    <EmbeddedResource Include="CodeEditor\ErrorProbeView.paml" />
-    <EmbeddedResource Include="CodeEditor\SignatureHelpView.paml" />
     <EmbeddedResource Include="Console\ConsoleView.paml" />
     <EmbeddedResource Include="ErrorList\ErrorListView.paml" />
     <EmbeddedResource Include="ExtensionManagerDialog\ExtensionManagerDialogView.paml" />
@@ -40,24 +32,27 @@
     <None Remove="AboutScreen\Assets\logo-256.png" />
     <None Remove="AboutScreen\Assets\logo-65.png" />
     <None Remove="AboutScreen\Assets\logo.png" />
-    <None Remove="CodeEditor\Highlighting\Resources\XML-Mode.xshd" />
     <None Remove="SolutionExplorer\TemplateView.xaml" />
     <None Remove="SolutionExplorer\TextTemplateParameter.xaml" />
+    <None Remove="Terminal\TerminalView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutScreen\Assets\logo-256.png" />
     <EmbeddedResource Include="AboutScreen\Assets\logo-65.png" />
     <EmbeddedResource Include="AboutScreen\Assets\logo.png" />
-    <EmbeddedResource Include="CodeEditor\Highlighting\Resources\XML-Mode.xshd" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia"  />
-    <PackageReference Include="GitInfo" Version="2.0.10" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="GitInfo" Version="2.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.SyndicationFeed.ReaderWriter" Version="1.0.2" />
     <PackageReference Include="System.Composition" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AvalonStudio.Shell\src\AvalonStudio.Utils\AvalonStudio.Utils.csproj" />
+    <ProjectReference Include="..\..\AvalonStudio.TerminalEmulator\src\AvalonStudio.Terminals\AvalonStudio.Terminals.csproj" />
     <ProjectReference Include="..\..\DataGrid\src\Avalonia.DataGrid\Avalonia.DataGrid.csproj" />
     <ProjectReference Include="..\..\debugger-libs\Mono.Debugging\Mono.Debugging.csproj" />
     <ProjectReference Include="..\AvalonStudio.Debugging\AvalonStudio.Debugging.csproj" />
@@ -68,6 +63,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="SolutionExplorer\TextTemplateParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Terminal\TerminalView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

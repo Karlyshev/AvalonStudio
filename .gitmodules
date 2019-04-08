@@ -6,7 +6,7 @@
 	url = https://github.com/AvaloniaUI/AvaloniaEdit
 [submodule "AvalonStudio/Avalonia.Ide"]
 	path = AvalonStudio/Avalonia.Ide
-	url = https://github.com/VitalElement/Avalonia.Ide.git
+	url = https://github.com/kekekeks/Avalonia.Ide.git
 [submodule "templating"]
 	path = templating
 	url = https://github.com/VitalElement/templating.git
@@ -16,3 +16,6 @@
 [submodule "DataGrid"]
 	path = DataGrid
 	url = https://github.com/AvaloniaUI/DataGrid.git
+[submodule "AvalonStudio.TerminalEmulator"]
+	path = AvalonStudio.TerminalEmulator
+	url = https://github.com/VitalElement/AvalonStudio.TerminalEmulator.git

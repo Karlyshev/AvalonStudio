@@ -390,7 +390,7 @@ namespace AvalonStudio.Projects.CPlusPlus
                 var result = IoC.Get<IStudio>()
                     .TestFrameworks.FirstOrDefault(tf => tf.Value.GetType().ToString() == TestFrameworkReference);
 
-                return result.Value;
+                return result?.Value;
             }
             set
             {
@@ -487,8 +487,6 @@ namespace AvalonStudio.Projects.CPlusPlus
         {
             if (!System.IO.File.Exists(filename))
             {
-                Console.WriteLine("Unable for find project file: " + filename);
-
                 return null;
             }
 

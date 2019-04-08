@@ -5,6 +5,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
+using System.Reactive;
 using System.Threading.Tasks;
 
 namespace AvalonStudio.Controls.Standard.FindInFiles
@@ -22,11 +23,11 @@ namespace AvalonStudio.Controls.Standard.FindInFiles
         private string _fileMask;
         private string _searchStats;
 
-        public FindInFilesViewModel()
+        public FindInFilesViewModel() : base("Find Results")
         {
             Title = "Find Results";
 
-            FindCommand = ReactiveCommand.Create(async () =>
+            FindCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 Results = null;
                 SearchStats = null;
@@ -114,6 +115,6 @@ namespace AvalonStudio.Controls.Standard.FindInFiles
             set { this.RaiseAndSetIfChanged(ref _searchStats, value); }
         }
 
-        public ReactiveCommand FindCommand { get; }
+        public ReactiveCommand<Unit, Unit> FindCommand { get; }
     }
 }

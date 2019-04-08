@@ -1,5 +1,6 @@
 using AvalonStudio.Extensibility.Shell;
 using AvalonStudio.Packages;
+using AvalonStudio.Packaging;
 using AvalonStudio.Platforms;
 using AvalonStudio.Projects;
 using AvalonStudio.Projects.CPlusPlus;
@@ -26,7 +27,7 @@ namespace AvalonStudio.Toolchains.STM32
             {
                 if (_contentDirectory == null)
                 {
-                    _contentDirectory = Path.Combine(PackageManager.GetPackageDirectory("AvalonStudio.Toolchains.Clang"), "content");
+                    _contentDirectory = PackageManager.GetPackageDirectory("Clang").ToPlatformPath();
                 }
 
                 return _contentDirectory;
@@ -408,17 +409,6 @@ namespace AvalonStudio.Toolchains.STM32
                         break;
                 }
             }
-
-            return result;
-        }
-
-        public override IList<object> GetConfigurationPages(IProject project)
-        {
-            var result = new List<object>
-            {
-                new CompileSettingsFormViewModel(project),
-                new LinkerSettingsFormViewModel(project)
-            };
 
             return result;
         }

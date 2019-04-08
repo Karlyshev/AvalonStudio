@@ -4,14 +4,15 @@ using Avalonia.Logging.Serilog;
 using Avalonia.Markup.Xaml;
 using AvalonStudio.Packages;
 using AvalonStudio.Platforms;
-using AvalonStudio.Repositories;
 using AvalonStudio.Shell;
 using Serilog;
 using System;
 using AvalonStudio.Extensibility.Studio;
 using AvalonStudio.Extensibility;
 using System.IO;
-using Avalonia.Gtk3;
+using AvalonStudio.Utils;
+using AvalonStudio.Packaging;
+using AvalonStudio.Terminals.Unix;
 
 namespace AvalonStudio
 {
@@ -32,6 +33,8 @@ namespace AvalonStudio
         [STAThread]
         private static void Main(string[] args)
         {
+            UnixPsuedoTerminal.Trampoline(args);
+        
 #if !DEBUG
         try
             {
@@ -49,11 +52,10 @@ namespace AvalonStudio
 
                 Platform.Initialise();
 
-                PackageSources.InitialisePackageSources();
-
                 Dispatcher.UIThread.Post(async () =>
                    {
                        await PackageManager.LoadAssetsAsync().ConfigureAwait(false);
+                       
                    });
             })
             .StartShellApp<AppBuilder, MainWindow>("AvalonStudio", null, () => new MainWindowViewModel());
@@ -74,20 +76,22 @@ namespace AvalonStudio
         {
             var result = AppBuilder.Configure<App>();
 
-            if (Platform.PlatformIdentifier == Platforms.PlatformID.Unix)
+            if(Platform.PlatformIdentifier == Platforms.PlatformID.Win32NT)
             {
-                result.UseGtk3(new Gtk3PlatformOptions
-                {
-                    UseDeferredRendering = true,
-                    UseGpuAcceleration = true
-                }).UseSkia();
+                result
+                    .UseWin32()
+                    .UseSkia();
             }
             else
             {
                 result.UsePlatformDetect();
             }
 
-            return result;
+            return result
+                .With(new Win32PlatformOptions { AllowEglInitialization = true, UseDeferredRendering = true })
+                .With(new MacOSPlatformOptions { ShowInDock = true })
+                .With(new AvaloniaNativePlatformOptions { UseDeferredRendering = true, UseGpu = true })
+                .With(new X11PlatformOptions { UseGpu = true, UseEGL = true });
         }
 
         public override void Initialize()
